@@ -4,37 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Send Data</title>
+    <title>Receive and Display Message</title>
 </head>
 
 <body>
-    <h1>发送消息</h1>
-    <form id="messageForm">
-        <input type="text" id="to" placeholder="To" required>
-        <input type="text" id="data" placeholder="Data" required>
-        <button type="submit">发送</button>
-    </form>
+    <h1>接收到的消息：</h1>
+    <div id="messageDisplay">没有消息</div>
 
     <script>
-        document.getElementById('messageForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            var to = document.getElementById('to').value;
-            var data = document.getElementById('data').value;
+        // 用于接收 C++ 端发送的消息并显示
+        function receiveMessage(message) {
+            document.getElementById('messageDisplay').textContent = message;
+        }
 
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'https://lzxuan01.github.io/MyServer/api/send', true); // 替换为你的 API 地址
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    console.log('Message sent');
-                }
-            };
-            var payload = {
-                to: to,
-                data: data
-            };
-            xhr.send(JSON.stringify(payload));
-        });
+        // 模拟接收数据（在实际中，你会通过后端处理 POST 请求并调用这个函数）
+        window.onload = function() {
+            // 这个模拟会接收到从 C++ 发送来的消息并显示
+            fetch('https://lzxuan01.github.io/MyServer/api/send')
+                .then(response => response.json())
+                .then(data => {
+                    receiveMessage(data.message); // 从服务器获取并显示消息
+                })
+                .catch(err => console.error('Error:', err));
+        };
     </script>
 </body>
 
