@@ -1,1 +1,34 @@
 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receive and Display Message</title>
+</head>
+
+<body>
+    <h1>接收到的消息：</h1>
+    <div id="messageDisplay">没有消息</div>
+
+    <script>
+        // 用于接收 C++ 端发送的消息并显示
+        function receiveMessage(message) {
+            document.getElementById('messageDisplay').textContent = message;
+        }
+
+        // 模拟接收数据（在实际中，你会通过后端处理 POST 请求并调用这个函数）
+        window.onload = function() {
+            // 这个模拟会接收到从 C++ 发送来的消息并显示
+            fetch('https://lzxuan01.github.io/MyServer/api/send')
+                .then(response => response.json())
+                .then(data => {
+                    receiveMessage(data.message); // 从服务器获取并显示消息
+                })
+                .catch(err => console.error('Error:', err));
+        };
+    </script>
+</body>
+
+</html>
